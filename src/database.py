@@ -1,7 +1,21 @@
 import sqlite3
+import os
 
-DB_NAME = "data/tfm_bot.db"
+# 1. Obtener la ruta absoluta del directorio donde se encuentra este archivo (src/)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+# 2. Obtener la ruta de la carpeta raíz del proyecto (TFM_MISP_Backend)
+RAIZ_DIR = os.path.abspath(os.path.join(BASE_DIR, ".."))
+
+# 3. Asegurar la ruta absoluta hacia el directorio 'data'
+DATA_DIR = os.path.join(RAIZ_DIR, "data")
+
+# 4. Asegurar de forma estricta la existencia de la carpeta 'data/' antes de cualquier operación
+if not os.path.exists(DATA_DIR):
+    os.makedirs(DATA_DIR, exist_ok=True)
+
+# 5. Definir la ruta absoluta y definitiva al archivo de la base de datos
+DB_NAME = os.path.join(DATA_DIR, "tfm_bot.db")
 
 def inicializar_db():
     """Crea las tablas necesarias para usuarios y logs (OE#4)."""
