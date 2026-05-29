@@ -1,29 +1,2 @@
-# ====================================================================
-# TFM CIBERSEGURIDAD - FILTRADO DE PERSISTENCIA Y SECRETOS (RS1)
-# ====================================================================
-
-# Excluir la base de datos SQLite activa dentro de la carpeta data
-data/tfm_bot.db
-data/GeoLite2-City.mmdb
-
-# Excluir el archivo de variables de entorno con credenciales reales
-.env
-
-# ====================================================================
-# FILTRADO DE RECURSOS OSINT Y ALMACENAMIENTO PESADO
-# ====================================================================
-
-# Excluir la base de datos de geolocalización MaxMind de la carpeta data
-data/GeoLite2-City.mmdb
-
-# ====================================================================
-# COMPILACIÓN Y ENTORNO DE DESARROLLO
-# ====================================================================
-src/__pycache__/
 __pycache__/
-.idea/
-.vscode/
 
-
-cp template.env .env
-nano .env

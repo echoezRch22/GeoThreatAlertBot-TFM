@@ -19,7 +19,7 @@ La arquitectura del software sigue un diseño modular y estructurado de la sigui
     *   `geo_module.py` : Módulo de análisis geoespacial y validación cruzada.
     *   `telegram_bot.py` : Lógica operativa de los comandos e interfaz interactiva del bot.
     *   `database.py` : Gestor transaccional y persistencia CRUD (SQLite).
-*   `data/` : Directorio local para almacenamiento de persistencia (Excluido en control de cambios de Git).
+*   `data/` : Directorio local para almacenamiento de persistencia.
 *   `Dockerfile` : Receta de aprovisionamiento y empaquetamiento del contenedor Python.
 *   `docker-compose.yml` : Manifiesto de orquestación para el despliegue del stack completo (MISP, DB, Redis, Bot).
 *   `template.env` : Archivo guía de variables de entorno requerido para inicializar el sistema.
