@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # 1. El orquestador de tu TFM (Tus scripts de Python y el Bot)
+  bot-orquestador:
+    build: .
+    container_name: tfm_bot_orchestrator
+    restart: always
+    # Vincula tu entorno local con el contenedor para que persistan los cambios
+    volumes:
+      - .:/app
+    # Inyecta los tokens y credenciales reales de forma segura desde tu archivo oculto .env
+    env_file:
+      - .env
+    depends_on:
+      - misp-core
+
+  # 2. El servidor de Ciberinteligencia MISP (Núcleo)
+  misp-core:
+    image: ghcr.io/misp/misp-docker/misp-core:latest
+    container_name: misp_core_server
+    restart: always
+    ports:
+      - "443:443"
+    env_file:
+      - .env
+    depends_on:
+      - misp-db
+      - misp-redis
+
+  # 3. La Base de Datos Relacional para la plataforma MISP
+  misp-db:
+    image: mariadb:10.11
+    container_name: misp_mariadb_db
+    restart: always
+    environment:
+      - MYSQL_DATABASE=misp
+      - MYSQL_USER=misp
+    env_file:
+      - .env
+    volumes:
+      - misp_db_data:/var/lib/mysql
+
+  # 4. El motor de caché para optimizar el rendimiento de MISP
+  misp-redis:
+    image: valkey/valkey:7.2
+    container_name: misp_redis_cache
+    restart: always
+
+# Volúmenes declarados para asegurar que los datos de MISP no se borren al apagar el contenedor
+volumes:
+  misp_db_data:
