@@ -8,7 +8,7 @@ load_dotenv()
 
 class MispExtractor:
     def __init__(self):
-        # RS1: Protección de credenciales [cite: 216, 217]
+        # RS1: Protección de credenciales
         self.url = os.getenv('MISP_URL')
         self.key = os.getenv('MISP_KEY')
         self.verify = False
@@ -73,7 +73,7 @@ class MispExtractor:
         paises = set()
 
         for ioc in atributos:
-            # OE#2: Usamos el módulo de geolocalización para clasificar el origen [cite: 151]
+            # OE#2: Usamos el módulo de geolocalización para clasificar el origen
             pais = obtener_pais_ip(ioc.value)
             if pais and pais != "Desconocido":
                 paises.add(pais)
@@ -83,20 +83,20 @@ class MispExtractor:
 
     # def obtener_detalles_evento(self, event_id):
     #     """
-    #     OE#5: Extrae metadatos enriquecidos (Info, TLP, Nivel) para dar contexto[cite: 154].
+    #     OE#5: Extrae metadatos enriquecidos (Info, TLP, Nivel) para dar contexto.
     #     """
     #     try:
     #         # Analizado en la Tabla 1: /events/get/<id>
     #         evento = self.misp.get_event(event_id, pythonify=True)
     #
-    #         # Procesamiento de Taxonomía TLP [cite: 112]
+    #         # Procesamiento de Taxonomía TLP
     #         tlp = "No definido"
     #         if hasattr(evento, 'tags'):
     #             for tag in evento.tags:
     #                 if "tlp:" in tag.name.lower():
     #                     tlp = tag.name.split("=")[-1].strip('"').upper()
     #
-    #         # Clasificación de nivel de amenaza [cite: 179]
+    #         # Clasificación de nivel de amenaza
     #         niveles = {"1": "🔴 ALTO", "2": "🟡 MEDIO", "3": "🟢 BAJO", "4": "⚪ INDEFINIDO"}
     #         amenaza = niveles.get(str(evento.threat_level_id), "⚪ INDEFINIDO")
     #
@@ -125,12 +125,12 @@ class MispExtractor:
                         # Si la etiqueta es tlp:white, extraerá "WHITE"
                         tlp = tag.name.split(":")[-1].strip('"').upper()
 
-            # --- CONTROL DE SEGURIDAD MIGRADO DE LA LÓGICA CONCEPTUAL ---
+            # --- CONTROL DE SEGURIDAD ---
             # Si el evento NO es explícitamente público (TLP:WHITE), se bloquea su procesamiento
             if tlp != "WHITE":
                 print(
-                    f"[BLOQUEO TLP] Evento {event_id} descartado automáticamente. Razón: Restricción de confidencialidad (TLP={tlp})[cite: 1]")
-                return None  # Al retornar None, el orquestador sabrá que no debe difundir este IoC[cite: 1]
+                    f"[BLOQUEO TLP] Evento {event_id} descartado automáticamente. Razón: Restricción de confidencialidad (TLP={tlp})")
+                return None  # Al retornar None, el orquestador sabrá que no debe difundir este IoC
             # ------------------------------------------------------------
 
             # 2. Extraer Actor de Amenaza o Malware (Galaxias)
@@ -146,7 +146,7 @@ class MispExtractor:
 
             return {
                 "info": evento.info,
-                "tlp": f"TLP:{tlp}",  # Devolverá "TLP:WHITE" listo para el formateo del bot[cite: 1]
+                "tlp": f"TLP:{tlp}",  # Devolverá "TLP:WHITE" listo para el formateo del bot
                 "nivel": amenaza,
                 "atribucion": atribucion,
                 "fecha": evento.date.strftime('%d-%m-%Y') if hasattr(evento, 'date') else "N/A",

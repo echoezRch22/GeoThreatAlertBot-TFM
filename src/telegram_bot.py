@@ -10,7 +10,7 @@ load_dotenv()
 
 class ThreatBot:
     def __init__(self):
-        # RS1: Token obtenido de variables de entorno [cite: 217]
+        # RS1: Token obtenido de variables de entorno
         self.token = os.getenv('TELEGRAM_TOKEN')
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -34,7 +34,7 @@ class ThreatBot:
     async def suscribir(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """
         Permite al usuario elegir un país para recibir alertas segmentadas.
-        Responde al Requisito Funcional RF3[cite: 186].
+        Responde al Requisito Funcional RF3.
         """
         if not context.args:
             await update.message.reply_text(
@@ -46,7 +46,7 @@ class ThreatBot:
         pais = " ".join(context.args).strip()
         chat_id = update.effective_chat.id
 
-        # OE#4: Guardar en la base de datos interna [cite: 153, 191, 193]
+        # OE#4: Guardar en la base de datos interna
         guardar_suscripcion(chat_id, pais)
 
         await update.message.reply_text(f"✅ Te has suscrito con éxito a las alertas de: {pais}")
@@ -134,14 +134,14 @@ class ThreatBot:
         await update.message.reply_text(mensaje, parse_mode='Markdown')
 
     def run(self):
-        """Inicia el bot y registra los comandos[cite: 190]."""
+        """Inicia el bot y registra los comandos"""
         if not self.token:
             print("❌ Error: No se encontró TELEGRAM_TOKEN en el entorno.")
             return
 
         application = ApplicationBuilder().token(self.token).build()
 
-        # Registro de comandos según los casos de uso [cite: 265]
+        # Registro de comandos según los casos de uso
         application.add_handler(CommandHandler('start', self.start))
         application.add_handler(CommandHandler('suscribir', self.suscribir))
         application.add_handler(CommandHandler('desuscribir', self.desuscribir))

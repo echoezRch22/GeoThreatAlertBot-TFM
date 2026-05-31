@@ -20,7 +20,7 @@ def obtener_pais_ip(ip):
         return "Desconocido"
 
 def obtener_geo_enriquecida(ip):
-    """OE#2: Clasificación geográfica detallada (País, Ciudad, ISP)[cite: 151, 185]."""
+    """OE#2: Clasificación geográfica detallada (País, Ciudad, ISP)"""
     if not os.path.exists(DB_PATH):
         return {"pais": "Desconocido", "ciudad": "-", "isp": "-"}
 
